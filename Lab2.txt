@@ -1,0 +1,61 @@
+Pseudo code:
+
+function multiply(x: Integer, y: Integer) returns: Integer
+{
+  i = 0
+  product = 0
+  while (i < x) {
+    product = product + y
+    i = i + 1
+  }
+  return product
+}
+
+# Pseudo assembly
+
+; For hard coded values x = Ch and y = 1Eh
+
+mov cx 0              ; i = 0
+mov ax 0              ; product = 0
+
+label: loopStart
+cmp cx, C             ; Compare i to x
+jb loopEnd            ; if (i < x) break loop
+
+add ax, 1E            ; product = product + y
+
+add cx, 1             ; i = i + 1
+
+jmp loopStart         ; Continue loop (jump to loop start)
+label: loopEnd        ; Jump here to break the loop
+
+                      ; Done! ax contains the product of 1Eh and Ch.
+
+# Binary First Pass
+1101 0111  0000 0000 0000 0000 ; mov cx 0      0000
+1100 0111  0000 0000 0000 0000 ; mov ax 0      0003
+0111 0111  0000 0000 0000 1100 ; cmp cx, C     0006 loopStart
+0000 1010  ???? ???? ???? ???? ; jb loopEnd    0009
+1010 0111  0000 0000 0001 1110 ; add ax, 1E    000C
+1011 0111  0000 0000 0000 0001 ; add cx, 1     000F
+0000 1110  ???? ???? ???? ???? ; jmp loopStart 0012
+                                               0015 loopEnd
+
+# Binary Second Pass
+1101 0111  0000 0000 0000 0000 ; mov cx 0      0000
+1100 0111  0000 0000 0000 0000 ; mov ax 0      0003
+0111 0111  0000 0000 0000 1100 ; cmp cx, C     0006 loopStart
+0000 1010  0000 0000 0001 0101 ; jb loopEnd    0009
+1010 0111  0000 0000 0001 1110 ; add ax, 1E    000C
+1011 0111  0000 0000 0000 0001 ; add cx, 1     000F
+0000 1110  0000 0000 0000 0110 ; jmp loopStart 0012
+                                               0015 loopEnd
+
+# Hex
+D7 0000 ; mov cx 0
+C7 0000 ; mov ax 0
+77 000C ; cmp cx, C
+0A 0015 ; jb loopEnd
+A7 001E ; add ax, 1E
+B7 0001 ; add cx, 1
+0E 0006 ; jmp loopStart
