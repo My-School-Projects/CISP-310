@@ -52,8 +52,8 @@ label: loopEnd        ; Jump here to break the loop
                                                0015 loopEnd
 
 # Hex
-D7 0000 ; mov cx 0
-C7 0000 ; mov ax 0
+D7 0000 ; mov cx, 0
+C7 0000 ; mov ax, 0
 77 000C ; cmp cx, C
 0A 0015 ; jb loopEnd
 A7 001E ; add ax, 1E
