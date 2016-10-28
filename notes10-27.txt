@@ -1,0 +1,57 @@
+Stack addresses small to big, bottom to top
+
+push/pop EFLAGS:
+pushfd, popfd - (flags dword)
+
+cdecl:
+
+someProcedure(x,y,z)
+
+push z
+
+ESP --> | z |
+        |   |
+        |   |
+
+push y
+
+        | z |
+ESP --> | y |
+        |   |
+
+push x
+
+        | z |
+        | y |
+ESP --> | x |
+
+call someProcedure
+
+        | z |
+        | y |
+        | x |
+ESP --> |ret| <-- address of next instruction after call instruction
+
+push ebp
+mov ebp, esp
+
+        | z |
+        | y |
+        | x |
+        |ret|
+ESP --> |ebp| <-- EBP
+
+push ecx
+push esi
+
+        | z |
+        | y |
+        | x |
+        |ret|
+        |ebp| <-- EBP
+        |ecx|
+ESP --> |ecx|
+
+x = DWORD PTR [EBP + 8]
+y = DWORD PTR [EBP + 12]
+z = DWORD PTR [EBP + 16]
